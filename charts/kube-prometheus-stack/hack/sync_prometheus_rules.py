@@ -26,37 +26,37 @@ def change_style(style, representer):
 # Source files list
 charts = [
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/alertmanager-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/alertmanager-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/kubePrometheus-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/kube-prometheus-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/kubernetesControlPlane-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/kube-state-metrics-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/kubeStateMetrics-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/kubernetes-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/nodeExporter-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/node-exporter-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/prometheus-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/prometheus-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
     {
-        'source': 'https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/prometheusOperator-prometheusRule.yaml',
+        'source': 'https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/prometheus-operator-prometheusRule.yaml',
         'destination': '../templates/prometheus/rules-1.14',
         'min_kubernetes': '1.14.0-0'
     },
@@ -119,10 +119,10 @@ replacement_map = {
         'init': '{{- $operatorJob := printf "%s-%s" (include "kube-prometheus-stack.fullname" .) "operator" }}'},
     'job="prometheus-k8s"': {
         'replacement': 'job="{{ $prometheusJob }}"',
-        'init': '{{- $prometheusJob := printf "%s-%s" (include "kube-prometheus-stack.fullname" .) "prometheus" }}'},
+        'init': '{{- $prometheusJob := printf "%s-%s" (include "kube-prometheus-stack.fullname" .) "service" }}'},
     'job="alertmanager-main"': {
         'replacement': 'job="{{ $alertmanagerJob }}"',
-        'init': '{{- $alertmanagerJob := printf "%s-%s" (include "kube-prometheus-stack.fullname" .) "alertmanager" }}'},
+        'init': '{{- $alertmanagerJob := printf "scylla-alertmanager-service" }}'},
     'namespace="monitoring"': {
         'replacement': 'namespace="{{ $namespace }}"',
         'init': '{{- $namespace := printf "%s" (include "kube-prometheus-stack.namespace" .) }}'},

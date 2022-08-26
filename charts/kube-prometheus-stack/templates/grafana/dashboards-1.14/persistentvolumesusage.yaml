@@ -1,5 +1,5 @@
 {{- /*
-Generated from 'persistentvolumesusage' from https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/grafana-dashboardDefinitions.yaml
+Generated from 'persistentvolumesusage' from https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/grafana-dashboardDefinitions.yaml
 Do not change in-place! In order to change this file first read following link:
 https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/hack
 */ -}}
@@ -60,14 +60,13 @@ data:
 
                         },
                         "id": 2,
-                        "interval": "1m",
                         "legend": {
                             "alignAsTable": true,
                             "avg": true,
                             "current": true,
                             "max": true,
                             "min": true,
-                            "rightSide": true,
+                            "rightSide": false,
                             "show": true,
                             "sideWidth": null,
                             "total": false,
@@ -93,14 +92,14 @@ data:
                         "steppedLine": false,
                         "targets": [
                             {
-                                "expr": "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
+                                "expr": "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Used Space",
                                 "refId": "A"
                             },
                             {
-                                "expr": "sum without(instance, node) (topk(1, (kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n",
+                                "expr": "sum without(instance, node) (topk(1, (kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Free Space",
@@ -169,11 +168,7 @@ data:
 
                         },
                         "id": 3,
-                        "interval": "1m",
-                        "legend": {
-                            "alignAsTable": true,
-                            "rightSide": true
-                        },
+                        "interval": null,
                         "links": [
 
                         ],
@@ -212,7 +207,7 @@ data:
                         "tableColumn": "",
                         "targets": [
                             {
-                                "expr": "max without(instance,node) (\n(\n  topk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n  -\n  topk(1, kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n)\n/\ntopk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
+                                "expr": "max without(instance,node) (\n(\n  topk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n  -\n  topk(1, kubelet_volume_stats_available_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n)\n/\ntopk(1, kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
                                 "format": "time_series",
                                 "intervalFactor": 2,
                                 "legendFormat": "",
@@ -262,14 +257,13 @@ data:
 
                         },
                         "id": 4,
-                        "interval": "1m",
                         "legend": {
                             "alignAsTable": true,
                             "avg": true,
                             "current": true,
                             "max": true,
                             "min": true,
-                            "rightSide": true,
+                            "rightSide": false,
                             "show": true,
                             "sideWidth": null,
                             "total": false,
@@ -295,14 +289,14 @@ data:
                         "steppedLine": false,
                         "targets": [
                             {
-                                "expr": "sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n",
+                                "expr": "sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": "Used inodes",
                                 "refId": "A"
                             },
                             {
-                                "expr": "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
+                                "expr": "(\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n  -\n  sum without(instance, node) (topk(1, (kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})))\n)\n",
                                 "format": "time_series",
                                 "intervalFactor": 1,
                                 "legendFormat": " Free inodes",
@@ -371,11 +365,7 @@ data:
 
                         },
                         "id": 5,
-                        "interval": "1m",
-                        "legend": {
-                            "alignAsTable": true,
-                            "rightSide": true
-                        },
+                        "interval": null,
                         "links": [
 
                         ],
@@ -414,7 +404,7 @@ data:
                         "tableColumn": "",
                         "targets": [
                             {
-                                "expr": "max without(instance,node) (\ntopk(1, kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n/\ntopk(1, kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
+                                "expr": "max without(instance,node) (\ntopk(1, kubelet_volume_stats_inodes_used{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n/\ntopk(1, kubelet_volume_stats_inodes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\", persistentvolumeclaim=\"$volume\"})\n* 100)\n",
                                 "format": "time_series",
                                 "intervalFactor": 2,
                                 "legendFormat": "",
@@ -460,7 +450,7 @@ data:
                         "value": "default"
                     },
                     "hide": 0,
-                    "label": "Data Source",
+                    "label": null,
                     "name": "datasource",
                     "options": [
 
@@ -484,7 +474,7 @@ data:
                     "options": [
 
                     ],
-                    "query": "label_values(kubelet_volume_stats_capacity_bytes{job=\"kubelet\", metrics_path=\"/metrics\"}, cluster)",
+                    "query": "label_values(kubelet_volume_stats_capacity_bytes, cluster)",
                     "refresh": 2,
                     "regex": "",
                     "sort": 1,
@@ -510,7 +500,7 @@ data:
                     "options": [
 
                     ],
-                    "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\"}, namespace)",
+                    "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\"}, namespace)",
                     "refresh": 2,
                     "regex": "",
                     "sort": 1,
@@ -536,7 +526,7 @@ data:
                     "options": [
 
                     ],
-                    "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"$namespace\"}, persistentvolumeclaim)",
+                    "query": "label_values(kubelet_volume_stats_capacity_bytes{cluster=\"$cluster\", job=\"kubernetes-nodes\", namespace=\"$namespace\"}, persistentvolumeclaim)",
                     "refresh": 2,
                     "regex": "",
                     "sort": 1,

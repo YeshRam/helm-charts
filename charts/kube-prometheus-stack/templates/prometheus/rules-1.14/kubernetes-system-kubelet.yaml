@@ -1,5 +1,5 @@
 {{- /*
-Generated from 'kubernetes-system-kubelet' group from https://raw.githubusercontent.com/prometheus-operator/kube-prometheus/main/manifests/kubernetesControlPlane-prometheusRule.yaml
+Generated from 'kubernetes-system-kubelet' group from https://raw.githubusercontent.com/YeshRam/kube-prometheus/release-0.9-scylla/manifests/kubernetes-prometheusRule.yaml
 Do not change in-place! In order to change this file first read following link:
 https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack/hack
 */ -}}
@@ -68,16 +68,16 @@ spec:
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubelettoomanypods
         summary: Kubelet is running at capacity.
       expr: |-
-        count by(cluster, node) (
+        count by(node) (
           (kube_pod_status_phase{job="kube-state-metrics",phase="Running"} == 1) * on(instance,pod,namespace,cluster) group_left(node) topk by(instance,pod,namespace,cluster) (1, kube_pod_info{job="kube-state-metrics"})
         )
         /
-        max by(cluster, node) (
+        max by(node) (
           kube_node_status_capacity{job="kube-state-metrics",resource="pods"} != 1
         ) > 0.95
       for: 15m
       labels:
-        severity: info
+        severity: warning
 {{- if .Values.defaultRules.additionalRuleLabels }}
 {{ toYaml .Values.defaultRules.additionalRuleLabels | indent 8 }}
 {{- end }}
@@ -91,7 +91,7 @@ spec:
         description: The readiness status of node {{`{{`}} $labels.node {{`}}`}} has changed {{`{{`}} $value {{`}}`}} times in the last 15 minutes.
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubenodereadinessflapping
         summary: Node readiness status is flapping.
-      expr: sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (cluster, node) > 2
+      expr: sum(changes(kube_node_status_condition{status="true",condition="Ready"}[15m])) by (node) > 2
       for: 15m
       labels:
         severity: warning
@@ -125,7 +125,7 @@ spec:
         description: Kubelet Pod startup 99th percentile latency is {{`{{`}} $value {{`}}`}} seconds on node {{`{{`}} $labels.node {{`}}`}}.
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubeletpodstartuplatencyhigh
         summary: Kubelet Pod startup latency is too high.
-      expr: histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubelet", metrics_path="/metrics"}[5m])) by (cluster, instance, le)) * on(cluster, instance) group_left(node) kubelet_node_name{job="kubelet", metrics_path="/metrics"} > 60
+      expr: histogram_quantile(0.99, sum(rate(kubelet_pod_worker_duration_seconds_bucket{job="kubernetes-nodes"}[5m])) by (instance, le)) * on(instance) group_left(node) kubelet_node_name{job="kubernetes-nodes"} > 60
       for: 15m
       labels:
         severity: warning
@@ -241,7 +241,7 @@ spec:
         description: Kubelet has disappeared from Prometheus target discovery.
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubeletdown
         summary: Target disappeared from Prometheus target discovery.
-      expr: absent(up{job="kubelet", metrics_path="/metrics"} == 1)
+      expr: absent(up{job="kubernetes-nodes"} == 1)
       for: 15m
       labels:
         severity: critical
